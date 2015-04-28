@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "TraktAPIClient.h"
 
 @interface ViewController ()
 
@@ -14,9 +15,21 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    TraktAPIClient *client = [TraktAPIClient sharedClient];
+    
+    [client getShowsForDate:[NSDate date]
+                   username:@"rwtestuser"
+               numberOfDays:3
+                    success:^(NSURLSessionDataTask *task, id responseObject) {
+                        NSLog(@"Success -- %@", responseObject);
+                    }
+                    failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        NSLog(@"Failure -- %@", error);
+                    }];
 }
 
 - (void)didReceiveMemoryWarning {
